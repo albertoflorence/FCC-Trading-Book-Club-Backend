@@ -2,6 +2,7 @@ module.exports = (Model) => {
   Model.props = {
     userName: {
       validate: {
+        unique: true,
         len: [4, 36]
       }
     },
@@ -19,6 +20,10 @@ module.exports = (Model) => {
       modify: {
         crypt: true
       }
+    },
+    city: {
+    },
+    state: {
     }
   }
 

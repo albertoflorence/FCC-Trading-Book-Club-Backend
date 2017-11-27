@@ -1,3 +1,2 @@
-const db = require('../../models')
-
-module.exports = db
+const {connect} = require('../../models')
+module.exports = connect

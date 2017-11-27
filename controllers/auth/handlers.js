@@ -16,6 +16,8 @@ const handleResult = (res) => (c) => {
     _id: result._id,
     userName: result.userName,
     email: result.email,
+    city: result.city || '',
+    state: result.state || ''
   }
   return res.send({
     user,

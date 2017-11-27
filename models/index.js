@@ -6,8 +6,8 @@ const client = mongodb.MongoClient()
 const check = require('../policies/validation')
 const db = {}
 
-module.exports = () => {
-  return new Promise ((resolve, reject) => {
+const connect = () => {
+  return new Promise((resolve, reject) => {
     client.connect(config.uri, (err, connection) => {
       if (err) return reject(err)
       fs.readdirSync(__dirname)
@@ -19,7 +19,11 @@ module.exports = () => {
           collection.check = check
           db[fileName] = collection
         })
-        return resolve(db)
-      })
-    }) 
-}
+      return resolve(db)
+    })
+  })
+} 
+
+db.connect = connect
+
+module.exports = db

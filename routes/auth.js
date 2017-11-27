@@ -1,5 +1,6 @@
+const { signUp, signIn, getGoogleUrl, signInWithGoogle } = require('../controllers/auth')
+
 module.exports = (app) => {
-  const { signUp, signIn, getGoogleUrl, signInWithGoogle } = app.controllers.auth
   app.post('/auth/signup', signUp)
   app.post('/auth/signin', signIn)
   app.get('/auth/url/google', getGoogleUrl)
