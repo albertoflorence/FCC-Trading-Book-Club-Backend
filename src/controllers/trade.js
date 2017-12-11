@@ -15,9 +15,8 @@ const create = async (req, res) => {
 
 const getOne = async (req, res) => {
   const {fields, filter} = req.query
-  const user = req.user.userName
-  filter.user = user
-  const trade = await Trades.findOne(filter, fields)
+  const user = req.user.userName 
+  const trade = await Trades.findOne({$or:[{user}, {userTarget: user}],...filter}, fields)
   res.send(trade)
 }
 
