@@ -23,10 +23,7 @@ const getOne = async (req, res) => {
 const get = async (req, res) => {
   let {fields, filter} = req.query
   const user = req.user.userName
-  console.log('aqui')
-  const trades = await Trades.find([{$or:[{user}, {userTarget: user}], fields).toArray()
-  console.log('aqui')
-  
+  const trades = await Trades.find({$or:[{user}, {userTarget: user}], ...filter}, fields)
   return res.send(trades)
 }
 
