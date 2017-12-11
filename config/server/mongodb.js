@@ -1,2 +1,2 @@
-const {connect} = require('../../models')
+const {connect} = require('../../src/models')
 module.exports = connect
