@@ -23,7 +23,7 @@ const getOne = async (req, res) => {
 const get = async (req, res) => {
   let {fields, filter} = req.query
   const user = req.user.userName
-  const trades = await Trades.find({$or:[{user: user}, {userTarget: user}]}, fields)
+  const trades = await Trades.find({$or:[{user: user}, {userTarget: user}]}, fields).toArray()
   return res.send(trades)
 }
 
