@@ -28,7 +28,7 @@ const getType = async (bookId, user) => {
       }
     }
   } else {
-    return null
+    return {}
   }
   return { type, book }
 }

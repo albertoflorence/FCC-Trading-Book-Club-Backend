@@ -37,7 +37,7 @@ signInWithToken = async (req, res) => {
 },
 isAuthenticated = (req, res, next) => {
   if (!req.user) {
-    return res.status(401).send({msg: 'unauthenticated user'})
+    return res.status(401).send({message: 'unauthenticated user'})
   }
   return next()
 }

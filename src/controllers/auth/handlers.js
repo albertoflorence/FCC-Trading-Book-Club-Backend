@@ -27,8 +27,8 @@ const handleResult = (res) => (c) => {
   })
 }
 const handleError = (res) => (error) => {
-  const {status=500, msg, ...err} = error
-  return res.status(status).send(msg || err)
+  const {status=500, message, ...err} = error
+  return res.status(status).send(message || err)
 }
 
 const verifyToken = async (token) => {
@@ -37,7 +37,7 @@ const verifyToken = async (token) => {
     const user = await Users.findOne({_id: ObjectId(_id)})
     if (!user) {
       return Promise.reject({
-        msg: 'user not found',
+        message: 'user not found',
         status: 404
       })
     }

@@ -3,7 +3,7 @@ const email = ({password, newEmail}, {email}, Users) => {
     .then(() => Users.check({email: newEmail}, 'update'))
     .then(r => Users.updateOne({email}, {$set: {email: newEmail}}))
     .then(() => ({
-      msg: "Email changed sucessfully",
+      message: "Email changed sucessfully",
       data: { 
         property: 'email',
         data: newEmail
@@ -18,13 +18,13 @@ const password = ({confirmPassword, password, newPassword }, {email}, Users ) =>
   return Users.checkPassword({email, password})
     .then(() => Users.check({password: newPassword}, 'update'))
     .then(r => Users.updateOne({email}, {$set: {password: r.password}}))
-    .then(() => ({msg: "Password changed successfully"}))
+    .then(() => ({message: "Password changed successfully"}))
 }
 
 const city = (data, {email}, Users) => {
   return Users.updateOne({email}, {$set: {city: data}})
     .then(() => ({
-      msg: 'City changed successfully',
+      message: 'City changed successfully',
       data: {
         property: 'city',
         data
@@ -35,7 +35,7 @@ const city = (data, {email}, Users) => {
 const state = (data, {email}, Users) => {
   return Users.updateOne({email}, {$set: {state: data}})
     .then(() => ({
-      msg: 'State changed successfully',
+      message: 'State changed successfully',
       data: {
         property: 'state',
         data

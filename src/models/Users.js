@@ -30,7 +30,7 @@ module.exports = (Model) => {
   Model.checkPassword = ({password, email}) => 
     Model.check({password}, 'find')
       .then(r => Model.findOne({email, password: r.password}))
-      .then(r => r ? null : Promise.reject({msg: 'Please check the password', status: 400}))
+      .then(r => r ? null : Promise.reject({message: 'Please check the password', status: 400}))
   
 
   return Model

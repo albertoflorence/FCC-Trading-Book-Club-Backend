@@ -1,4 +1,4 @@
-const {Books} = require('../../models')
+const {Books, Trades} = require('../../models')
 const Promise = require('bluebird')
 const gBookApi = require('./gBookApi')
 const handleErrors = require('../../handlers/handleErrors')
@@ -24,7 +24,7 @@ const get = async (req, res, next) => {
       const books = await gBookApi.search(q)
       return res.send(books)
     }
-    const cursor = Books.find(filter, fields)
+    const cursor = Books.find(filter, fields).hint({ $natural : -1 })
     if (limit) {
       cursor.limit(limit)
     }
@@ -35,18 +35,32 @@ const get = async (req, res, next) => {
   }
 }
 const create = async (req, res, next) => {
-  const {bookId} = req.body
-  const isOnDatabase = await Books.findOne({bookId})
-  if (isOnDatabase) return next()
-  const book = await gBookApi.getById(bookId)
-  await Books.insertOne(book)
-  return next()
+  try {
+    const {bookId} = req.body
+    if (!bookId) return next({status: 404, message: 'not found'})
+    const isOnDatabase = await Books.findOne({bookId})
+    if (isOnDatabase) return next()
+    const book = await gBookApi.getById(bookId)
+    await Books.insertOne(book)
+    return next()
+  } catch ( err ) {
+    next(err)
+  }
+  
 }
 const register = async (req, res, next) => {
   try {
     const {type, bookId} = req.body
     if (!bookId ) return next({status: 422, message: 'bookId is require'})
     const user = req.user.userName
+    const trade = await Trades.findOne({
+      $and: [
+        {$or: [{bookId: bookId}, {bookIdTarget: bookId}]},
+        {$or: [{user: user}, {userTarget: user}]},
+        {status: 'pending'}
+      ]
+    }, {_id: true})
+    if ( trade ) return next({status: 422, message: 'you have a pending on this book'})
     const result = await Books.toogleAndCount(type, reverse(type), {bookId}, user)
     res.send(result.value)
   } catch ( err ) {

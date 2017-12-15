@@ -40,14 +40,14 @@ const filterDetailedData = data => {
 const search = async (query) => {
   const books = await api.search(query).then(data => data.map(filterData).filter(e => e) )
   if ( books.length < 1 ) {
-    return Promise.reject({status: 404, msg: 'book not found'})
+    return Promise.reject({status: 404, message: 'book not found'})
   }
   return books
 }
 const getById = async (id) => {
   const book = await api.lookup(id).then(filterDetailedData)
   if ( !book ) {
-    return Promise.reject({status: 404, msg: 'book not found'})
+    return Promise.reject({status: 404, message: 'book not found'})
   }
   return book
 }

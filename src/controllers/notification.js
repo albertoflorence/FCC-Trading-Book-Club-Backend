@@ -1,28 +1,32 @@
 const {ObjectId} = require('mongodb')
 const {Notifications} = require('../models')
-const formatTime = require("../handlers/formatTime")
+const formatTime = require('../handlers/formatTime')
 
-const getMsg = (type, sender) => {
-  let msg = sender + ' '
+const getMessage = (type, sender) => {
+  let message = sender + ' '
   switch (type) {
-    case 'tradeRequest':
-      msg += "is trying to trade a book with you"
-      break
+    case 'trade_request':
+      return message += 'wants to trade a book with you'
+    case 'trade_cancel':
+      return message += 'canceled a trade that he requested'
+    case 'trade_reject':
+      return message += 'rejected your trade offer'
+    case 'trade_accept':
+      return message += 'accepted your trade offer'
   }
-  return msg
 }
 
-const get = async (req, res) => {
+ const get = async (req, res) => {
   try {
     const user = req.user.userName
     const notificationsRaw = await Notifications.find({receiver: user}).limit(15).sort({createdAt: -1}).toArray()
     const notifications = notificationsRaw.map(el => ({
       _id: el._id,
       sender: el.sender,
-      msg: getMsg(el.type, el.sender),
+      message: getMessage(el.type, el.sender),
       time: formatTime(new Date().getTime() - el.createdAt) + ' ago',
-      link: el.link,
-      seen: el.seen
+      seen: el.seen,
+      type: el.type
     }))
     res.send(notifications)
   } catch ( err ) {

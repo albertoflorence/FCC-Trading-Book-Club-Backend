@@ -5,8 +5,8 @@ module.exports = ({data, model, name})  =>
         !r
         ? resolve() 
         : reject({
-            msg: `This ${name} already exists, please try something else !`,
+            message: `This ${name} already exists, please try something else !`,
             status: 422
-      })).catch(err => reject({msg: err}))
+      })).catch(err => reject({message: err}))
     })
 

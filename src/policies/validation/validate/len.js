@@ -1,18 +1,18 @@
-const msgError = (data, len, name) => {
-  let msg = ''
+const messageError = (data, len, name) => {
+  let message = ''
   let [min, max] = len
-  if(!data && min > 0) msg = `The ${name} is required `
-  else if (data.length < min ) msg = `The ${name} has to have at least ${min} character in length`
-  else if (data.length > max ) msg = `The ${name} cannot be greater than ${max} character in length`
+  if(!data && min > 0) message = `The ${name} is required `
+  else if (data.length < min ) message = `The ${name} has to have at least ${min} character in length`
+  else if (data.length > max ) message = `The ${name} cannot be greater than ${max} character in length`
   else return null
   return {
-    msg,
+    message,
     status: 422
   }
 }
 module.exports = ({prop, data, name}) => 
   new Promise((resolve, reject) => {
-    const error = msgError(data, prop, name)
+    const error = messageError(data, prop, name)
     if(error) return reject(error)
     return resolve()
   })
